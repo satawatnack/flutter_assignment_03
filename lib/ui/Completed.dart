@@ -27,7 +27,7 @@ class CompletedState extends State<Completed> {
                     onPressed: () {
                       _store
                           .collection('list')
-                          .where('done', isEqualTo: true)
+                          .where('done', isEqualTo: 1)
                           .getDocuments()
                           .then((value) {
                         value.documents.forEach((f) {
@@ -71,7 +71,17 @@ class CompletedState extends State<Completed> {
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.delete_forever),
-                    onPressed: () {},
+                    onPressed: () {
+                      _store
+                          .collection('list')
+                          .where('done', isEqualTo: 1)
+                          .getDocuments()
+                          .then((value) {
+                        value.documents.forEach((f) {
+                          f.reference.delete();
+                        });
+                      });
+                    },
                   ),
                 ],
               ),
