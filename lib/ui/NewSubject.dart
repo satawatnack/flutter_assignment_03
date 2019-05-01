@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
 
 class NewSubject extends StatefulWidget {
   @override
@@ -9,13 +11,9 @@ class NewSubject extends StatefulWidget {
 }
 
 class NewSubjectState extends State<NewSubject> {
+  Firestore _store = Firestore.instance;
   TextEditingController subject = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +42,9 @@ class NewSubjectState extends State<NewSubject> {
               child: Text("Save"),
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
+                  _store
+                      .collection('list')
+                      .add({'title': subject.text, 'done': 0});
                   Navigator.pushReplacementNamed(context, "/");
                 }
               },
